@@ -1,0 +1,75 @@
+<apex:page standardController="Account">
+	<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" />
+	<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" />
+	<apex:image value="https://a.dryicons.com/images/icon_sets/aesthetica/png/128x128/chart.png" style="padding: 10px" onmouseover="showDialog();"/>
+	<apex:image value="http://b.dryicons.com/images/icon_sets/classy_icons_set/png/128x128/chart.png" style="padding: 10px" onclick="showDialog();"/>
+	
+
+	<script>
+		
+		function showDialog(){
+			top.postMessage( '{"action": "open", "name" : "{!Account.Name}"}', 'https://carfax--erf2.cs22.my.salesforce.com' );
+		}
+	</script> 
+	
+<!-- This is the code for the custom link ... it has to be packaged like the next comment
+
+(function(){  window.top.addEventListener( "message",
+    function (d) {
+      // NOTE: You can create a apex custom setting to preset the Visualforce server URL
+      if(d.origin !== 'https://carfax--erf2--c.cs22.visual.force.com'){ return; }
+      // NOTE: You can utilize d.data to fetch the message information (in case of digesting the information)
+      console.log(d.data);
+      var payloadArray = JSON.parse( d.data );
+      if (payloadArray.action == 'open'){
+		console.log('opening');
+		try{ 
+			 jQuery(function() { 
+			 /*Append the jQuery CSS CDN Link to the Head tag.*/ 
+			 jQuery('head').append('<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/start/jquery-ui.css" type="text/css" />'); 
+			
+			 /*Create the HTML(DIV Tag) for the Dialog.*/ 
+			 var html = 
+			 '<div id="dialog" ><p><iframe id="reportcontent" src="https://reports.carfax.net/ibmcognos/cgi-bin/cognosisapi.dll?b_action=cognosViewer&ui.action=run&ui.object=%2fcontent%2ffolder[%40name%3d%27Development%27]%2ffolder[%40name%3d%27FM%20Packages%20-%20Test%27]%2fpackage[%40name%3d%27Subscriber-Prospect%27]%2freport[%40name%3d%27TEST%20-%20Cognos%20Reporting%20Interface%27]&ui.name=TEST%20-%20Cognos%20Reporting%20Interface&run.outputFormat=&run.prompt=false&ui.header=false&cv.header=false&cv.toolbar=false" frameborder="0" scrolling="no" style="width: 100%;height: 500px"></iframe></p></div>'; 
+			
+			 /*Check if the Dialog(DIV Tag) already exists if not then Append the same to the Body tag.*/ 
+			 if(!jQuery('[id=dialog]').size()){ 
+			 jQuery('body').append(html); 
+			 } 
+			
+			 /*Open the jQuery Dialog.*/ 
+			 jQuery( "#dialog" ).dialog({ 
+			 autoOpen: true, 
+			 modal: true,
+			 position: 'center',			 
+			 width: $(window).width()-180,
+			 height: $(window).height()-180,
+			 title: payloadArray.name,
+			 show: { 
+			 effect: "slide", 
+			 duration: 100 
+			 }, 
+			 hide: { 
+			 effect: "slide", 
+			 duration: 100 
+			 }, 
+			 buttons: { 
+			 } 
+			 }); 
+			 }); 
+		} 
+		catch(e){ 
+			alert('An Error has Occured. Error: ' + e); 
+		}
+      }
+
+    },
+  false);
+  }());
+ -->	
+ <!-- this is the code once the js has been based64'd  
+{!REQUIRESCRIPT("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")}
+{!REQUIRESCRIPT("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js")}
+{!REQUIRESCRIPT("data:application/javascript;base64,KGZ1bmN0aW9uKCl7ICB3aW5kb3cudG9wLmFkZEV2ZW50TGlzdGVuZXIoICJtZXNzYWdlIiwKICAgIGZ1bmN0aW9uIChkKSB7CiAgICAgIC8vIE5PVEU6IFlvdSBjYW4gY3JlYXRlIGEgYXBleCBjdXN0b20gc2V0dGluZyB0byBwcmVzZXQgdGhlIFZpc3VhbGZvcmNlIHNlcnZlciBVUkwKICAgICAgaWYoZC5vcmlnaW4gIT09ICdodHRwczovL2NhcmZheC0tZXJmMi0tYy5jczIyLnZpc3VhbC5mb3JjZS5jb20nKXsgcmV0dXJuOyB9CiAgICAgIC8vIE5PVEU6IFlvdSBjYW4gdXRpbGl6ZSBkLmRhdGEgdG8gZmV0Y2ggdGhlIG1lc3NhZ2UgaW5mb3JtYXRpb24gKGluIGNhc2Ugb2YgZGlnZXN0aW5nIHRoZSBpbmZvcm1hdGlvbikKICAgICAgY29uc29sZS5sb2coZC5kYXRhKTsKICAgICAgdmFyIHBheWxvYWRBcnJheSA9IEpTT04ucGFyc2UoIGQuZGF0YSApOwogICAgICBpZiAocGF5bG9hZEFycmF5LmFjdGlvbiA9PSAnb3BlbicpewoJCWNvbnNvbGUubG9nKCdvcGVuaW5nJyk7CgkJdHJ5eyAKCQkJIGpRdWVyeShmdW5jdGlvbigpIHsgCgkJCSAvKkFwcGVuZCB0aGUgalF1ZXJ5IENTUyBDRE4gTGluayB0byB0aGUgSGVhZCB0YWcuKi8gCgkJCSBqUXVlcnkoJ2hlYWQnKS5hcHBlbmQoJzxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iLy9hamF4Lmdvb2dsZWFwaXMuY29tL2FqYXgvbGlicy9qcXVlcnl1aS8xLjEwLjMvdGhlbWVzL3N0YXJ0L2pxdWVyeS11aS5jc3MiIHR5cGU9InRleHQvY3NzIiAvPicpOyAKCQkJCgkJCSAvKkNyZWF0ZSB0aGUgSFRNTChESVYgVGFnKSBmb3IgdGhlIERpYWxvZy4qLyAKCQkJIHZhciBodG1sID0gCgkJCSAnPGRpdiBpZD0iZGlhbG9nIiA+PHA+PGlmcmFtZSBpZD0icmVwb3J0Y29udGVudCIgc3JjPSJodHRwczovL3JlcG9ydHMuY2FyZmF4Lm5ldC9pYm1jb2dub3MvY2dpLWJpbi9jb2dub3Npc2FwaS5kbGw/Yl9hY3Rpb249Y29nbm9zVmlld2VyJnVpLmFjdGlvbj1ydW4mdWkub2JqZWN0PSUyZmNvbnRlbnQlMmZmb2xkZXJbJTQwbmFtZSUzZCUyN0RldmVsb3BtZW50JTI3XSUyZmZvbGRlclslNDBuYW1lJTNkJTI3Rk0lMjBQYWNrYWdlcyUyMC0lMjBUZXN0JTI3XSUyZnBhY2thZ2VbJTQwbmFtZSUzZCUyN1N1YnNjcmliZXItUHJvc3BlY3QlMjddJTJmcmVwb3J0WyU0MG5hbWUlM2QlMjdURVNUJTIwLSUyMENvZ25vcyUyMFJlcG9ydGluZyUyMEludGVyZmFjZSUyN10mdWkubmFtZT1URVNUJTIwLSUyMENvZ25vcyUyMFJlcG9ydGluZyUyMEludGVyZmFjZSZydW4ub3V0cHV0Rm9ybWF0PSZydW4ucHJvbXB0PWZhbHNlJnVpLmhlYWRlcj1mYWxzZSZjdi5oZWFkZXI9ZmFsc2UmY3YudG9vbGJhcj1mYWxzZSIgZnJhbWVib3JkZXI9IjAiIHNjcm9sbGluZz0ibm8iIHN0eWxlPSJ3aWR0aDogMTAwJTtoZWlnaHQ6IDUwMHB4Ij48L2lmcmFtZT48L3A+PC9kaXY+JzsgCgkJCQoJCQkgLypDaGVjayBpZiB0aGUgRGlhbG9nKERJViBUYWcpIGFscmVhZHkgZXhpc3RzIGlmIG5vdCB0aGVuIEFwcGVuZCB0aGUgc2FtZSB0byB0aGUgQm9keSB0YWcuKi8gCgkJCSBpZighalF1ZXJ5KCdbaWQ9ZGlhbG9nXScpLnNpemUoKSl7IAoJCQkgalF1ZXJ5KCdib2R5JykuYXBwZW5kKGh0bWwpOyAKCQkJIH0gCgkJCQoJCQkgLypPcGVuIHRoZSBqUXVlcnkgRGlhbG9nLiovIAoJCQkgalF1ZXJ5KCAiI2RpYWxvZyIgKS5kaWFsb2coeyAKCQkJIGF1dG9PcGVuOiB0cnVlLCAKCQkJIG1vZGFsOiB0cnVlLAoJCQkgcG9zaXRpb246ICdjZW50ZXInLAkJCSAKCQkJIHdpZHRoOiAkKHdpbmRvdykud2lkdGgoKS0xODAsCgkJCSBoZWlnaHQ6ICQod2luZG93KS5oZWlnaHQoKS0xODAsCgkJCSB0aXRsZTogcGF5bG9hZEFycmF5Lm5hbWUsCgkJCSBzaG93OiB7IAoJCQkgZWZmZWN0OiAic2xpZGUiLCAKCQkJIGR1cmF0aW9uOiAxMDAgCgkJCSB9LCAKCQkJIGhpZGU6IHsgCgkJCSBlZmZlY3Q6ICJzbGlkZSIsIAoJCQkgZHVyYXRpb246IDEwMCAKCQkJIH0sIAoJCQkgYnV0dG9uczogeyAKCQkJIH0gCgkJCSB9KTsgCgkJCSB9KTsgCgkJfSAKCQljYXRjaChlKXsgCgkJCWFsZXJ0KCdBbiBFcnJvciBoYXMgT2NjdXJlZC4gRXJyb3I6ICcgKyBlKTsgCgkJfQogICAgICB9CgogICAgfSwKICBmYWxzZSk7CiAgfSgpKTs=")}
+  -->
+</apex:page>
