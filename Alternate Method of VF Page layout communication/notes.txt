@@ -1,0 +1,1 @@
+If you want to expand this, you'd want to generalize AccountKDTWidgetXDMConsumer.js

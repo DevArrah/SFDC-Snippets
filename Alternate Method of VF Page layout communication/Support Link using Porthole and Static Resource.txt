@@ -1,0 +1,4 @@
+{!REQUIRESCRIPT('/soap/ajax/32.0/connection.js')}
+{!REQUIRESCRIPT('https://rawgit.com/ternarylabs/porthole/master/src/porthole.min.js')}
+{!REQUIRESCRIPT('/resource/' & LEFT(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(TEXT(NOW()),':',''),'-',''),' ',''),10) &'000/AccountKDTWidgetXDMConsumer')}
+alert('This link has no click functionality. It works behind the scenes');

@@ -1,0 +1,68 @@
+<apex:page standardController="Account" extensions="AccountKDTWidgetController" showHeader="false" standardStylesheets="true" sidebar="false"  >
+	 <apex:includeScript value="https://rawgit.com/ternarylabs/porthole/master/src/porthole.min.js"/>
+	 <script>
+	    __acct = {Id: "{!Account.Id}"};
+        var acctid = __acct.Id.length === 18? __acct.Id.substring(0,15): __acct.Id;
+        __ProviderXDM = new Porthole.WindowProxy('{! BaseURL }/' + acctid);
+        __ProviderXDM.addEventListener( function(messageEvent) {
+            if (messageEvent) {
+                var msg = messageEvent.data;
+                switch (msg.verb) {
+                    case "test":
+                        alert("XDM Test message recv'd by Provider");
+                        break;
+                    case "refresh":
+                        location.reload();
+                        break;
+                }
+            }
+        });
+
+        var msg = {
+            verb: "resize",
+            payload: {
+                iframe:'AccountDetailKDTWidget',
+                size: {
+                    height: {! SizeOfWidget }
+                }
+            }
+        };  
+        __ProviderXDM.post(msg);  
+        
+        function redirect( ID ){
+        	var msg = {
+        				verb: "redirectToObj",
+        				payload: {
+        					ObjID: ID  				
+        				}
+        	};
+        	__ProviderXDM.post(msg);			
+        } 
+	 </script>
+	<apex:PageBlock rendered="{! RenderWidget }">
+	
+	<apex:pageBlockTable value="{!parentKDTs}" var="kdt" > 
+		<apex:Column >
+			<apex:outputLink onclick="redirect('{! kdt.id }');return false;">{!kdt.name}</apex:outputLink>
+			<apex:facet name="header">Name</apex:facet>
+		</apex:Column>
+		<apex:Column >
+			<apex:outputLink onclick="redirect('{! kdt.Account__c }');return false;">{!kdt.Account__r.Name}</apex:outputLink> 
+			<apex:facet name="header">Parent Account</apex:facet>
+		</apex:Column>
+		<apex:column value="{!kdt.Sub_Type__c}" />	
+		<apex:column value="{!kdt.Software_Name__c}" />
+		<apex:column value="{!kdt.Has_Duplicate__c}" />
+		<apex:column value="{!kdt.Effective_Frequency__c}" />
+		<apex:column value="{!kdt.Status__c}" />
+		<apex:column value="{!kdt.Number_Of_Days_Late__c}" />
+		<apex:column value="{!kdt.Records_Loaded__c}" />
+		<apex:column value="{!kdt.Records_Expected__c}" />
+		<apex:column value="{!kdt.Last_Received_Date__c}" />
+		<apex:column value="{!kdt.Last_Loaded_Date__c}" />
+	</apex:pageBlockTable>
+	</apex:PageBlock>
+	<apex:outputPanel rendered="{! NOT(RenderWidget) }">
+		{!Account.Name} has no parent KDTs
+	</apex:outputPanel>
+</apex:page>
