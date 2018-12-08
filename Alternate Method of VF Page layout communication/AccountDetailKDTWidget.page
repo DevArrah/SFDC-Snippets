@@ -1,5 +1,5 @@
 <apex:page standardController="Account" extensions="AccountKDTWidgetController" showHeader="false" standardStylesheets="true" sidebar="false"  >
-	 <apex:includeScript value="https://rawgit.com/ternarylabs/porthole/master/src/porthole.min.js"/>
+	 <apex:includeScript value="https://cdn.jsdelivr.net/gh/ternarylabs/porthole/src/porthole.min.js"/>
 	 <script>
 	    __acct = {Id: "{!Account.Id}"};
         var acctid = __acct.Id.length === 18? __acct.Id.substring(0,15): __acct.Id;
